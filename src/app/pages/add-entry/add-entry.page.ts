@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-add-entry',
@@ -22,8 +22,8 @@ export class AddEntryPage implements OnInit {
   date: string = "";
   constructor(
     private fromBuilder: FormBuilder,
-    private nativeStorage: NativeStorage,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private storageService: StorageService
   ) { 
     this.route.queryParams.subscribe((params)=>{
       if(params && params.date){
@@ -40,7 +40,6 @@ export class AddEntryPage implements OnInit {
   save(){
     console.log(this.updateForm.value);
     console.log("selected date", this.date);
-    this.nativeStorage.setItem(this.date, this.updateForm.value);
-    console.log("save update ", this.nativeStorage.getItem(this.date));
+    this.storageService.saveData(this.date, this.updateForm.value);
   }
 }
