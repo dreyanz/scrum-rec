@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Entry</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="updateForm" (ngSubmit)="save()" novalidate>
+    <ion-item>
+      <ion-label position="floating">What did you do yesterday?</ion-label>
+      <ion-textarea formControlName="didDo"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Plan today</ion-label>
+      <ion-textarea formControlName="plan"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Blocker Issues</ion-label>
+      <ion-textarea formControlName="blockers"></ion-textarea>
+    </ion-item>
+  
+    <section class="ion-margin">
+      <ion-button type="submit">Save</ion-button>
+    </section>
+  </form>
+</ion-content>
