@@ -1,0 +1,31 @@
+<ion-card>
+  <ion-item>
+    <ion-icon name="calendar" slot="start"></ion-icon>
+    <ion-label>Date</ion-label>
+    <ion-button fill="outline" slot="end" (click)="editClicked()">Edit</ion-button>
+  </ion-item>
+
+  <ion-card-content>
+    <ion-text class="ion-margin">
+      <h2>What did you do yesterday?</h2>
+      <p>
+        {{ updateData.didDo }}
+      </p>
+    </ion-text>
+
+    <ion-text class="ion-margin">
+      <h2>Plan today</h2>
+      <p>
+        {{ updateData.plan }}
+      </p>
+    </ion-text>
+
+    <ion-text class="ion-margin">
+      <h2>Blockers</h2>
+      <p>
+        {{ updateData.plan }}
+      </p>
+    </ion-text>
+  
+  </ion-card-content>
+</ion-card>

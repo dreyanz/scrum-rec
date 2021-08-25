@@ -7,6 +7,7 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 // Module
 import { CalendarModule } from 'ion2-calendar';   
+import { ComponentModule } from '../../components/component.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { CalendarModule } from 'ion2-calendar';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    CalendarModule
+    CalendarModule,
+    ComponentModule
   ],
   declarations: [HomePage]
 })

@@ -17,9 +17,11 @@
        [format]="'YYYY-MM-DD'">
     </ion-calendar>
 
-    <section *ngIf="isTodaySelected">
+    <section *ngIf="isTodaySelected && selectedUpdateData.didDo.length === 0 ">
       <ion-button expand="block" (click)="goToAddEntry()">Add Entry</ion-button>
     </section>
+
+    <app-update-item [updateData]="selectedUpdateData" (editSelected)="editSelected($event)"></app-update-item>
 
   </div>
 </ion-content>

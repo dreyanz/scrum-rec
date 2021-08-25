@@ -20,15 +20,30 @@ export class AddEntryPage implements OnInit {
   plan: string = "";
   blockers:string = "";
   date: string = "";
+
+  isEdit = false;
+  updateData = {
+    didDo: "",
+    plan: "",
+    blockers: ""
+  }
+
+  title = "Add";
+
   constructor(
     private fromBuilder: FormBuilder,
     private route: ActivatedRoute,
     private storageService: StorageService
   ) { 
     this.route.queryParams.subscribe((params)=>{
-      if(params && params.date){
+      if(params){
         this.date = params.date;
-        console.log("date is", this.date);
+        this.isEdit = params.isEdit;
+        if(params.updateData){
+          this.updateData = JSON.parse(params.updateData);
+          this.title = "Update";
+        }
+        console.log("param update data", params.updateData)
       }
     });
   }
@@ -38,8 +53,8 @@ export class AddEntryPage implements OnInit {
   }
   
   save(){
-    console.log(this.updateForm.value);
+    console.log("data to be saved ", this.updateData);
     console.log("selected date", this.date);
-    this.storageService.saveData(this.date, this.updateForm.value);
+    this.storageService.saveData(this.date, this.updateData);
   }
 }

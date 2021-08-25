@@ -14,11 +14,8 @@ export class StorageService {
     this.nativeStorage.setItem(key, value);
   }  
 
-  getData(key) {
-    this.nativeStorage.getItem(key).then((data) => {
-      console.log(data);
-    }
-    )
+  getData(key) : Promise<any> {
+    return this.nativeStorage.getItem(key);
   }
 
 }
