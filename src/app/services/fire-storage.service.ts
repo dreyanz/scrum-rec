@@ -19,4 +19,8 @@ export class FireStorageService {
     });
   }
 
+  getUserData(uId) {
+    return this.afStore.collection(`users`).doc(uId).snapshotChanges();
+  }
+
 }

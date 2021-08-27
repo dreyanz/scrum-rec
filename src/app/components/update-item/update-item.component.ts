@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { UpdateData } from 'src/app/shared/user';
 
 @Component({
   selector: 'app-update-item',
@@ -11,7 +12,16 @@ export class UpdateItemComponent implements OnInit {
 
   @Output() editSelected = new EventEmitter<any>();
  
-  constructor() { }
+  constructor() {
+    if(this.updateData === null){
+      this.updateData = {
+        didDo: "",
+        plan: "",
+        blockers: "",
+        date: ""
+      }
+    }
+  }
 
   ngOnInit() {}
 

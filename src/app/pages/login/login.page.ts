@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FireStorageService } from 'src/app/services/fire-storage.service';
 import { LoginCred } from 'src/app/shared/user';
 
 @Component({
@@ -17,10 +18,12 @@ export class LoginPage implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private fireStorage: FireStorageService,
   ) { }
 
   ngOnInit() {
+    this.authenticationService.signOut();
   }
 
   login() {
@@ -28,11 +31,34 @@ export class LoginPage implements OnInit {
     this.authenticationService.signInWithEmailPass(this.credential.emailAddress, 
       this.credential.password)
       .then((data)=>{
-        console.log(data.user.uid);
-        this.router.navigate(['/home']);
+        this.credential = {emailAddress: "", password: ""};
+        console.log("display name ", data.user.displayName);
+        this.redirectToHome(data);
       },(error)=>{
         alert("invalid credential");
         console.log("error signing in", JSON.stringify(error));
       })
+  }
+
+  redirectToHome(user) {
+
+    this.fireStorage.getUserData(user.user.uid).subscribe((data)=> {
+      
+      console.log(data.payload.data());
+
+      let navigationExtras: NavigationExtras = {
+        queryParams: {
+          displayName: data.payload.data()["displayName"]
+        }
+      };
+  
+      this.router.navigate(['/home'], navigationExtras);
+    })
+
+    
+  }
+
+  register() {
+    this.router.navigate(['/register']);
   }
 }

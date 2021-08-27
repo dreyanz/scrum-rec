@@ -7,6 +7,21 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <div>
+          Hi! {{ displayName }}
+        </div>
+      </ion-col>
+      <ion-col size="auto">
+        <div>
+          <a (click)="logout()">Logout</a>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <div class="ion-padding">
 
     <ion-calendar
@@ -17,7 +32,7 @@
        [format]="'YYYY-MM-DD'">
     </ion-calendar>
 
-    <section *ngIf="isTodaySelected && selectedUpdateData.didDo.length === 0 ">
+    <section *ngIf="isTodaySelected && selectedUpdateData === null ">
       <ion-button expand="block" (click)="goToAddEntry()">Add Entry</ion-button>
     </section>
 

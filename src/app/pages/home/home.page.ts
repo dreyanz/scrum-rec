@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CalendarComponent, CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { ApiService } from '../../services/api.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UpdateData } from 'src/app/shared/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -24,18 +26,19 @@ export class HomePage {
     to: new Date()
   }
 
-  selectedUpdateData = {
-    didDo: "",
-    plan: "",
-    blockers: ""
-  }
-
+  selectedUpdateData : UpdateData = null;
+  displayName: string = "";
   constructor(
+    private route: ActivatedRoute,
     private storageService: StorageService,
     private router: Router,
-    private apiService: ApiService
+    private authenticationService: AuthenticationService
   ) {
-
+    this.route.queryParams.subscribe((params)=>{
+      if(params){
+        this.displayName = params.displayName;
+      }
+    });
   }
 
   onChange($event) {
@@ -43,16 +46,6 @@ export class HomePage {
     let now = moment(moment().format("YYYY-MM-DD"));
     
     let selected = moment(this.selectedDate);
-
-    console.log(now);
-    console.log(selected);
-
-    if(now.isSame(selected)){
-      console.log("yes");
-
-    }else{
-      console.log("no");
-    }
     
     this.isTodaySelected = now.isSame(selected);
 
@@ -62,7 +55,12 @@ export class HomePage {
 
     this.storageService.getData(this.selectedDate).then((data)=>{
       console.log("update data ", data);
-      this.selectedUpdateData = JSON.parse(JSON.stringify(data));
+      if(data){
+        this.selectedUpdateData = JSON.parse(JSON.stringify(data));
+        this.selectedUpdateData.date = this.selectedDate;
+      }
+      else
+        this.selectedUpdateData = null;
     });
 
   }
@@ -87,6 +85,12 @@ export class HomePage {
       }
     };
     this.router.navigate(['/add-entry'], navigationExtras);
+  }
+
+  logout(){
+    this.authenticationService.signOut().then(()=>{
+      this.router.navigate(['/login']);
+    });
   }
 
 }

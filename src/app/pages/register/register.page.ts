@@ -1,4 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { User } from 'src/app/shared/user';
 
@@ -15,7 +17,10 @@ export class RegisterPage implements OnInit {
     displayName: "",
   }
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(
+    private authenticationService: AuthenticationService,
+    private location: Location
+  ) { }
 
   ngOnInit() {
   }
@@ -27,6 +32,7 @@ export class RegisterPage implements OnInit {
         this.userInfo.uid = data.user.uid;
         this.authenticationService.setUserData(this.userInfo).then((data)=> {
           console.log("saving to db ", data);
+          this.location.back();
         }, (error) => {
           console.log("error saving db ", error );
         })

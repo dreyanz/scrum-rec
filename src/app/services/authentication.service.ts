@@ -11,6 +11,7 @@ import * as firebase from 'firebase';
 export class AuthenticationService {
   userData: firebase.User;
 
+
   constructor(
         public afStore: AngularFirestore,
         public ngFireAuth: AngularFireAuth,
@@ -18,7 +19,6 @@ export class AuthenticationService {
         public ngZone: NgZone ) {
 
       this.ngFireAuth.authState.subscribe(user => {
-        console.log("user state changed ", JSON.stringify(user));
         if (user) {
           this.userData = user;
           localStorage.setItem('user', JSON.stringify(this.userData));
@@ -48,7 +48,7 @@ export class AuthenticationService {
       const userData: User = {
         uid: user.uid,
         email: user.email,
-        displayName: "test",
+        displayName: user.displayName,
         photoURL: "",
         emailVerified: false
       }
@@ -58,4 +58,37 @@ export class AuthenticationService {
         merge: true
       })
     }
+  
+     IsLoggedIn(): Promise<boolean> {
+
+        return new Promise((resolve, reject) =>
+          {
+            this.ngFireAuth.auth.onAuthStateChanged(
+              user => {
+                if (user) {
+                  console.log("user is signed in");
+                  // User is signed in.
+                  resolve(true)
+                } else {
+                  console.log("user is not signed in");
+                  this.router.navigate(['/login'])
+                  // No user is signed in.
+                  resolve(false)
+                }
+              },
+              // Prevent console error
+              error => resolve(false)
+            )
+          }
+        )
+      
+    }
+
+    signOut() {
+      return this.ngFireAuth.auth.signOut().then(() => {
+        localStorage.removeItem('user');
+        //this.router.navigate(['login']);
+      })
+    }
+    
 }
